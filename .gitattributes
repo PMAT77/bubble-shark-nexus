@@ -1,0 +1,4 @@
+* text=auto eol=lf
+# Preserve the exact bytes used by the upstream SHA-256 provenance checks.
+data/panel/** -text
+*.png -text

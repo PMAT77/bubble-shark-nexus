@@ -1,0 +1,13 @@
+BubbleShark Nexus
+
+Original project code is covered by LICENSE.
+
+Panel source snapshots, generated FAQ excerpts, logo and favicon:
+BubbleSharkPanel, Copyright (c) 2026 BubbleSharkPanel, MIT.
+See data/panel/LICENSE and data/release.json for the exact source commit.
+https://github.com/PMAT77/bubble-shark-panel
+
+SpotlightCard:
+Vue Bits, Copyright (c) 2025 David Haz, MIT + Commons Clause.
+Source snapshot obtained from https://vue-bits.dev/r/SpotlightCard.json
+See licenses/vue-bits.txt. This component has its own license conditions.

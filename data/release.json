@@ -1,0 +1,143 @@
+{
+  "version": "v0.15.3",
+  "channel": "Public Beta",
+  "releasedAt": "2026-10-06T06:24:37Z",
+  "repositoryUrl": "https://github.com/PMAT77/bubble-shark-panel",
+  "releaseUrl": "https://github.com/PMAT77/bubble-shark-panel/releases/tag/v0.15.3",
+  "sourceRef": "d519b8b0aeae0582591bbba8299c0f8678aba939",
+  "installer": "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/d519b8b0aeae0582591bbba8299c0f8678aba939/scripts/install.linux.sh",
+  "installerSha256": "cad80517c15329fb3f243225f36833836a9272ca131e5c62dbb8c9bdc53a451a",
+  "dockerImage": "ghcr.io/pmat77/bubblesharkpanel:v0.15.3",
+  "nativeAsset": "https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.15.3/bubblesharkpanel-native-v0.15.3-linux-x64.tar.gz",
+  "dockerAsset": "https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.15.3/bubblesharkpanel-v0.15.3-docker-image.tar.gz",
+  "githubProxy": "https://gh-proxy.com/",
+  "installerFlags": [
+    "--mode",
+    "--network",
+    "--check",
+    "--open-panel-port",
+    "--open-dst-ports",
+    "--no-swap"
+  ],
+  "requirements": {
+    "docker": "Debian 12 或 Ubuntu 22.04 / 24.04（只支持 apt 系），root 或 sudo，至少 4 GiB 内存，根分区至少 4 GiB 空闲——离线镜像包约 227 MB，导入后本地镜像约 560 MB（包可删），另外要给游戏本体（数 GB）和存档备份留地方。",
+    "native": "Debian 12 或 Ubuntu 22.04 / 24.04（只支持 apt 系），root 或 sudo，x86_64，至少 4 GiB 内存，根分区至少 4 GiB 空闲——游戏本体要数 GB，另外要给存档备份留地方。安装器会装 32 位运行库（`libcurl4:i386` 等），DST 与 SteamCMD 需要。"
+  },
+  "adminUsername": "superadmin",
+  "installDir": "/opt/bubblesharkpanel",
+  "demoUrl": "http://111.170.172.120:50155",
+  "qqGroup": "1055694763",
+  "ports": [
+    {
+      "name": "面板 Web",
+      "protocol": "TCP",
+      "port": 9527,
+      "when": "始终需要",
+      "sourceKey": "PANEL_PORT"
+    },
+    {
+      "name": "主世界 · 游戏",
+      "protocol": "UDP",
+      "port": 10999,
+      "when": "主世界",
+      "sourceKey": "DST_GAME_PORT"
+    },
+    {
+      "name": "主世界 · Steam 认证",
+      "protocol": "UDP",
+      "port": 8766,
+      "when": "主世界",
+      "sourceKey": "DST_AUTH_PORT"
+    },
+    {
+      "name": "主世界 · Steam 查询",
+      "protocol": "UDP",
+      "port": 12346,
+      "when": "主世界",
+      "sourceKey": "DST_MASTER_PORT"
+    },
+    {
+      "name": "洞穴 · 游戏",
+      "protocol": "UDP",
+      "port": 11000,
+      "when": "开启洞穴时",
+      "sourceKey": "DST_CAVES_GAME_PORT"
+    },
+    {
+      "name": "洞穴 · Steam 认证",
+      "protocol": "UDP",
+      "port": 8768,
+      "when": "开启洞穴时",
+      "sourceKey": "DST_CAVES_AUTH_PORT"
+    },
+    {
+      "name": "洞穴 · Steam 查询",
+      "protocol": "UDP",
+      "port": 12348,
+      "when": "开启洞穴时",
+      "sourceKey": "DST_CAVES_MASTER_PORT"
+    }
+  ],
+  "sources": [
+    {
+      "path": "README.md",
+      "sha256": "d03da906e0d4873d4d059b2398b1101737bf70946104b2d7c9195da0c86348ea",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "c61cd3140574cd18230bdffd5098c6f208bc082db20e676579a5741d3837fa83",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/LICENSE"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "59764c1cf76e49f8635d5c6ffd3d5b7267741ce660b1a9aff55770e7f0dd27ab",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/SECURITY.md"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "96e89628adc98bd8c28f66e3868cfbb482b1c2f73dcb000957fdc8c8e0b901c7",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/CHANGELOG.md"
+    },
+    {
+      "path": "scripts/install.linux.sh",
+      "sha256": "cad80517c15329fb3f243225f36833836a9272ca131e5c62dbb8c9bdc53a451a",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/scripts/install.linux.sh"
+    },
+    {
+      "path": "docs/install-docker.md",
+      "sha256": "fa6969361e9b452a67d123b12c4a7019b0b4d85e612c4ccea3baea1104840b1e",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/docs/install-docker.md"
+    },
+    {
+      "path": "docs/install-native.md",
+      "sha256": "a25f55fec19e4df866a9410fb7722eaa85a84acabf4403cc7e0faddf4d3b956c",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/docs/install-native.md"
+    },
+    {
+      "path": "docs/reference.md",
+      "sha256": "e73ce44b9535032835223c6dbe972b0b5ae9cea9f27d45cfed5e4d946e06df30",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/docs/reference.md"
+    },
+    {
+      "path": "docs/migrate-from-other-panel.md",
+      "sha256": "e8d1f6763cb7fafaf8e2fe0d8e0f96324c451a58bdf7260c27b883f98f3868ce",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/docs/migrate-from-other-panel.md"
+    },
+    {
+      "path": "docs/MEMORY.md",
+      "sha256": "b21c5370d28e7a9534d327b8c2dd1e64a50d9f0cae6ab019f6d78471160984e8",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/docs/MEMORY.md"
+    },
+    {
+      "path": "src/assets/images/logo.png",
+      "sha256": "afe9d728d980fe3f2c46b01bb2d0d27ce27ad3afa0a45e0c05a411520d39c832",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/src/assets/images/logo.png"
+    },
+    {
+      "path": "public/favicon.png",
+      "sha256": "d6f7d8a30ed66caa5d8ebb24c9e2c24e22e7674d5b1af0a6e2f7daa2e6341d04",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/d519b8b0aeae0582591bbba8299c0f8678aba939/public/favicon.png"
+    }
+  ]
+}

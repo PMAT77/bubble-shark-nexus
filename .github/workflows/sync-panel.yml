@@ -1,0 +1,45 @@
+name: Sync Panel Release
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [panel-release]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: panel-release-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm sync:panel
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: pnpm check:baseline
+      - run: pnpm test
+      - run: pnpm typecheck
+      - run: pnpm generate
+        env:
+          NUXT_PUBLIC_SITE_URL: ${{ vars.NEXUS_SITE_URL }}
+      - uses: actions/upload-artifact@v7
+        with:
+          name: nexus-static-synced
+          path: .output/public
+          include-hidden-files: true
+      - uses: actions/upload-artifact@v7
+        with:
+          name: panel-baseline
+          path: |
+            data/release.json
+            data/panel
+            content/faq

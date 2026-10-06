@@ -1,0 +1,29 @@
+name: Nexus checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:baseline
+      - run: pnpm test
+      - run: pnpm typecheck
+      - run: pnpm generate
+      - uses: actions/upload-artifact@v7
+        with:
+          name: nexus-static
+          path: .output/public
+          include-hidden-files: true

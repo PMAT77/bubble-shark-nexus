@@ -1,0 +1,13 @@
+node_modules/
+.nuxt/
+.output/
+dist
+.data/
+.cache/
+.artifacts/
+.env
+.env.*
+!.env.example
+*.log
+/.artifacts-build.log
+/nexus-site.tar.gz

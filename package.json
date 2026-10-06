@@ -1,0 +1,32 @@
+{
+  "name": "bubble-shark-nexus",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": { "node": ">=24.0.0" },
+  "scripts": {
+    "dev": "nuxt dev --host 127.0.0.1",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "test": "node --test tests/*.test.mjs",
+    "sync:panel": "node scripts/sync-bubbleshark-release.mjs",
+    "check:baseline": "node scripts/check-baseline.mjs"
+  },
+  "dependencies": {
+    "@nuxt/content": "3.16.1",
+    "@lucide/vue": "1.52.0",
+    "nuxt": "4.5.2",
+    "vue": "3.5.43"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "^24.0.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "~5.9.3",
+    "vue-tsc": "3.3.12"
+  }
+}

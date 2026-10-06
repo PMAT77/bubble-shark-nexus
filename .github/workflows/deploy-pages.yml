@@ -1,0 +1,48 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NUXT_APP_BASE_URL: ${{ vars.NEXUS_APP_BASE_URL || format('/{0}/', github.event.repository.name) }}
+      NUXT_PUBLIC_SITE_URL: ${{ vars.NEXUS_SITE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: actions/configure-pages@v5
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:baseline
+      - run: pnpm test
+      - run: pnpm typecheck
+      - run: pnpm generate
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: .output/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

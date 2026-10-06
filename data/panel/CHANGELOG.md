@@ -4,6 +4,23 @@
 
 ## [Unreleased]
 
+## [0.15.5] - 2026-10-06
+
+### Added
+
+- 正式 Release 发布成功后自动通知 Nexus 同步版本基线，更新安装命令与静态站点。
+
+### Fixed
+
+- 实例更新改为先检查再更新，强制校验仅保留列表勾选入口；版本未知显示原因，成功检查结果复用五分钟。
+- 安装界面移除进度条，日志显示当前阶段；修复 SteamCMD 中止更新后仍被判成功，以及安装完成等待远端查询的问题。
+- 离开实例详情时取消指标请求保持静默，后台状态变化不再重启轮询。
+- 实例加载世界时显示启动中；识别分片 Lua 致命错误并停止实例、保留失败原因，避免进程仍存活时误显示运行中。
+- 详情页更新后自动打开安装日志，并提供查看日志入口。
+- Docker 面板内更新沿用现有 Compose 项目名，避免部署目录挂载到 `/stack` 后重建容器时发生名称冲突；安装失败保留 updater 日志并显示具体原因。
+- 镜像发布清理保留带正式版本标签的 GHCR 镜像，避免 Docker 更新检查因正式镜像被删除而返回 404。
+- 更新检查失败时显示无法确认最新版本并禁用更新操作；Registry 错误补充目标镜像和请求地址。
+
 ## [0.15.4] - 2026-10-06
 
 ### Fixed
@@ -1024,7 +1041,8 @@
 - DST 房间 / 世界 / Mod 管理
 - 面板与 DST 镜像 GHCR 发布（`v*` tag）
 
-[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.15.1...HEAD
+[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.15.5...HEAD
+[0.15.5]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.15.4...v0.15.5
 [0.15.1]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.13.4...v0.14.0

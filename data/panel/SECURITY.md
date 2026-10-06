@@ -86,8 +86,8 @@
 **安装脚本以 root 执行。** 文档给出的一行式安装是 `curl … | sudo bash`。发布流水线同时产出 `install-<tag>.sh` 与同名 `.sha256`，条件允许时请走「下载 → 校验 → 执行」三步，而不是管道直执行：
 
 ```bash
-curl -fL -o install.sh https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.15.4/install-v0.15.4.sh
-curl -fL -o install.sh.sha256 https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.15.4/install-v0.15.4.sh.sha256
+curl -fL -o install.sh https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.15.5/install-v0.15.5.sh
+curl -fL -o install.sh.sha256 https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.15.5/install-v0.15.5.sh.sha256
 sha256sum -c install.sh.sha256
 sudo bash install.sh --mode docker
 ```

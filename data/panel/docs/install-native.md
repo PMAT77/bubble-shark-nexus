@@ -11,24 +11,24 @@
 一条命令装完。
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.4/scripts/install.linux.sh" \
+curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/scripts/install.linux.sh" \
   | sudo bash -s -- --mode native
 ```
 
 管道安装的默认模式是 Docker，**Native 必须显式写 `--mode native`**。GitHub Raw 慢的话，把 `https://raw.githubusercontent.com` 换成 `https://gh-proxy.com/https://raw.githubusercontent.com`。
 
-安装器按顺序做这些事：装基础依赖与 32 位运行库 → 创建 `bsp` 系统用户并开启 linger → 下载校验 Native Release（自带 Node 运行时）→ 解压到 `/opt/bubblesharkpanel/releases/v0.15.4` 并原子切换 `current` 符号链接 → 装 SteamCMD → 写 `panel.env` → 启动面板并等待健康检查。
+安装器按顺序做这些事：装基础依赖与 32 位运行库 → 创建 `bsp` 系统用户并开启 linger → 下载校验 Native Release（自带 Node 运行时）→ 解压到 `/opt/bubblesharkpanel/releases/v0.15.5` 并原子切换 `current` 符号链接 → 装 SteamCMD → 写 `panel.env` → 启动面板并等待健康检查。
 
 ## 安装（国内服务器）
 
 Native 不拉容器镜像，境外依赖只有两处：GitHub Raw（安装器组件）与 GitHub Release（Native 包）。安装器自带加速代理池（`gh-proxy.com`、`ghfast.top`、`ghproxy.com`），全部失败才走直连，国内一般可以直接装。先把脚本下载到本地更稳妥：
 
 ```bash
-tag=v0.15.4
+tag=v0.15.5
 curl -fL --retry 3 -o "install-${tag}.sh" \
   "https://gh-proxy.com/https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/${tag}/scripts/install.linux.sh"
 
-# 自证版本：必须输出 ...:-v0.15.4}}，对不上就停下排查
+# 自证版本：必须输出 ...:-v0.15.5}}，对不上就停下排查
 grep '^BSP_RELEASE_TAG=' "install-${tag}.sh"
 
 # 安装：--network cn 把 apt 源临时切到国内镜像，SteamCMD 走 cn 区域并重试 8 次
@@ -43,7 +43,7 @@ sudo env BSP_RELEASE_TAG="${tag}" bash "install-${tag}.sh" --mode native --netwo
 包旁必须放同名 `.sha256`，也可以用 `BSP_NATIVE_RELEASE_SHA256` 直接给出摘要。
 
 ```bash
-tag=v0.15.4
+tag=v0.15.5
 base="https://gh-proxy.com/https://github.com/PMAT77/bubble-shark-panel/releases/download/${tag}"
 curl -fL --retry 3 -o "bubblesharkpanel-native-${tag}-linux-x64.tar.gz"        "${base}/bubblesharkpanel-native-${tag}-linux-x64.tar.gz"
 curl -fL --retry 3 -o "bubblesharkpanel-native-${tag}-linux-x64.tar.gz.sha256" "${base}/bubblesharkpanel-native-${tag}-linux-x64.tar.gz.sha256"

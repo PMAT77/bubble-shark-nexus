@@ -69,7 +69,7 @@ PANEL_DB_FILENAME="${PANEL_DB_FILENAME:-bubblesharkpanel.sqlite}"
 PANEL_NATIVE_SERVICE="${BSP_NATIVE_SERVICE:-bubblesharkpanel.service}"
 
 SCRIPT_NAME="$(basename "$0")" # 当前脚本名称（用于日志展示）。
-BSP_RELEASE_TAG="${BSP_RELEASE_TAG:-${PANEL_IMAGE_TAG:-v0.15.3}}" # 默认安装的不可变 Release；同时锁定安装资源与镜像版本。
+BSP_RELEASE_TAG="${BSP_RELEASE_TAG:-${PANEL_IMAGE_TAG:-v0.15.4}}" # 默认安装的不可变 Release；同时锁定安装资源与镜像版本。
 INSTALLER_REPO_RAW="${INSTALLER_REPO_RAW:-}" # 兼容旧变量：指定单一安装资源源（为空时使用 INSTALLER_REPO_MIRRORS）。
 # GitHub 资源加速代理（前缀拼接型）：安装资源与 Native 包共用；BSP_GITHUB_PROXY 可强制指定单一节点。
 GITHUB_PROXY_SITES="${GITHUB_PROXY_SITES:-https://gh-proxy.com/,https://ghfast.top/,https://ghproxy.com/}"
@@ -77,7 +77,7 @@ BSP_GITHUB_PROXY="${BSP_GITHUB_PROXY:-}" # 强制指定 GitHub 加速代理（�
 INSTALLER_REPO_MIRRORS="${INSTALLER_REPO_MIRRORS:-}" # 安装资源镜像池；为空时由 init_installer_repo_pool 按代理清单生成。
 # 校验对象是镜像源提供的 git blob 原始字节（LF）；改动 compose 后必须同步更新此处。
 # 历史 pin eb30aeae... 与 v0.1.4 tag 内 compose blob（a34665e2...）不匹配，导致严格校验必然失败。
-INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_YML="${INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_YML:-7e91ee25a42436402d5a2bb34e6f5885e398d31eaae9931717c84f6f0c32f1cc}"
+INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_YML="${INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_YML:-d8835118c7baec6c9f23446c0e59d8f6e4cd0b810ac7f8717fa6b8e6e2762686}"
 INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_BIND_YML="${INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_BIND_YML:-2ca65c80ee02cfb08e3aec26ae17dabb38296e825147a43896bc7daf1cb07d65}"
 # Debian 12 等发行版源不含 Compose v2 时，从 docker/compose GitHub Release 自动补装 CLI 插件。
 # 摘要与官方 .sha256 / checksums.txt 资产双源核对；升级插件版本时需同步替换版本号与两个摘要。
@@ -1636,12 +1636,10 @@ install_native_steamcmd() {
 }
 
 prepare_native_panel_env() {
-  local native_uid steamcmd_region steamcmd_attempts existing_port existing_public_url is_upgrade
+  local native_uid steamcmd_attempts existing_port existing_public_url is_upgrade
   native_uid="$(id -u "${NATIVE_SERVICE_USER}")"
-  steamcmd_region=""
   steamcmd_attempts=5
   if [[ "${RESOLVED_NETWORK_PROFILE}" == "cn" ]]; then
-    steamcmd_region="cn"
     steamcmd_attempts=8
   fi
   run_as_root mkdir -p "${PANEL_INSTALL_DIR}"
@@ -1711,7 +1709,6 @@ prepare_native_panel_env() {
         "BSP_NATIVE_SYSTEMD_UNIT_DIR=${NATIVE_USER_HOME}/.config/systemd/user" \
         "BSP_NATIVE_USER=${NATIVE_SERVICE_USER}" \
         "BSP_NATIVE_UPDATE_DIR=${NATIVE_UPDATE_DIR}" \
-        "BSP_STEAMCMD_DOWNLOAD_REGION=${steamcmd_region}" \
         "BSP_STEAMCMD_INSTALL_MAX_ATTEMPTS=${steamcmd_attempts}" \
         "BSP_GITHUB_REPO=PMAT77/bubble-shark-panel" \
         "BSP_RELEASE_VERSION=${BSP_RELEASE_TAG}" \
@@ -2611,14 +2608,12 @@ preflight_checks() {
 
 # 生成运行目录、环境变量文件与 compose 配置。
 prepare_panel_files() {
-  local script_dir repo_compose compose_source bind_compose steamcmd_region steamcmd_attempts existing_port existing_public_url is_upgrade
+  local script_dir repo_compose compose_source bind_compose steamcmd_attempts existing_port existing_public_url is_upgrade
   script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   repo_compose="${script_dir}/../docker-compose.yml"
   compose_source="${COMPOSE_SOURCE:-${repo_compose}}"
-  steamcmd_region=""
   steamcmd_attempts=5
   if [[ "${RESOLVED_NETWORK_PROFILE}" == "cn" ]]; then
-    steamcmd_region="cn"
     steamcmd_attempts=8
   fi
 
@@ -2716,7 +2711,6 @@ prepare_panel_files() {
         "DOCKER_HOST=unix:///var/run/docker.sock" \
         "BSP_GAME_DST_IMAGE=${BSP_GAME_DST_IMAGE}" \
         "BSP_STEAMCMD_IMAGE=${BSP_STEAMCMD_IMAGE}" \
-        "BSP_STEAMCMD_DOWNLOAD_REGION=${steamcmd_region}" \
         "BSP_STEAMCMD_INSTALL_MAX_ATTEMPTS=${steamcmd_attempts}" \
         "# BSP_STEAMCMD_INSTALL_RETRY_DELAYS_MS=5000,10000,15000,20000,25000,30000,35000" \
         "# STEAMCMD_USERNAME=" \

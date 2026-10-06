@@ -29,7 +29,7 @@
 | --- | --- | --- |
 | `BSP_INSTALL_MODE` | `auto` | 同 `--mode` |
 | `BSP_NETWORK_PROFILE` | `auto` | 同 `--network` |
-| `BSP_RELEASE_TAG` | 脚本内置 `v0.15.3` | 安装指定版本。升级时填**目标**版本 |
+| `BSP_RELEASE_TAG` | 脚本内置 `v0.15.4` | 安装指定版本。升级时填**目标**版本 |
 | `BSP_PANEL_ENV_PRESET` | `auto` | 内存预设档位：`auto` / `small` / `medium` / `large` / `none` |
 | `PANEL_IMAGE` | GHCR 当前 tag | 统一镜像的完整引用（tag 或 digest），自建仓库时用 |
 | `INSTALL_STEAMCMD_IMAGE` | `1` | 设 `0` 跳过预拉 SteamCMD 镜像 |
@@ -96,7 +96,7 @@
 
 | 变量 | 默认 | 用途 |
 | --- | --- | --- |
-| `PANEL_IMAGE` | `ghcr.io/pmat77/bubblesharkpanel:v0.15.3` | 统一镜像引用，自建仓库或固定 digest 时用 |
+| `PANEL_IMAGE` | `ghcr.io/pmat77/bubblesharkpanel:v0.15.4` | 统一镜像引用，自建仓库或固定 digest 时用 |
 | `BSP_IMAGE_SOURCE` | `auto` | 安装阶段取运行时镜像的路线：`auto`（国内档或层数据不可达时用离线包，否则直拉）/ `offline`（固定离线包）/ `native`（固定 GHCR 直拉） |
 | `BSP_FORCE_IMAGE_PULL` | `0` | 设为 `1` 时即使本地已有同名镜像也重新拉取 |
 | `DOCKER_PULL_STALL_SECONDS` | `90` | 直拉时连续多少秒没有进度就判定停滞并放弃本次尝试 |
@@ -174,10 +174,10 @@
 | `BSP_STEAM_COMMUNITY_BASE_URL` | 官方 | `steamcommunity.com` 的反代 |
 | `BSP_STEAM_WEBAPI_KEY` | 空 | 用官方 Web API 拉列表，稳定性高于页面抓取 |
 | `BSP_STEAM_RELAY_URL` | 空 | 完全连不上 Steam 时走海外中继 |
-| `BSP_STEAMCMD_DOWNLOAD_REGION` | 不设置 | 国内服务器设 `cn` |
+| `BSP_STEAMCMD_DOWNLOAD_REGION` | 不设置 | 已废弃；旧配置兼容读取并忽略，下载节点由 SteamCMD 自动选择 |
 | `BSP_STEAMCMD_INSTALL_MAX_ATTEMPTS` | `5` | 安装重试次数，最多 20；国内建议 `8` |
 | `BSP_STEAMCMD_APP_UPDATE_TIMEOUT_MS` | `3600000` | 单次 app_update 超时（毫秒），大体积游戏慢链路上调到 2 小时 |
-| `BSP_STEAMCMD_HTTPS_PROXY` | 空 | SteamCMD 侧代理（容器里的 `127.0.0.1` 指容器自己） |
+| `BSP_STEAMCMD_HTTPS_PROXY` | 空 | SteamCMD 侧代理配置；游戏 CDN 是否走代理需实际验证。桥接容器访问宿主机代理使用 `host.docker.internal`，`127.0.0.1` 指容器自己 |
 | `BSP_STEAMCMD_INSTALL_RETRY_DELAYS_MS` | `4000,8000,8000,8000` | 每次重试前的等待毫秒数，逗号分隔 |
 
 <details>

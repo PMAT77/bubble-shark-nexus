@@ -1,6 +1,11 @@
 name: Sync Panel Release
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: '正式 Panel tag；留空同步最新正式 Release'
+        type: string
+        required: false
   repository_dispatch:
     types: [panel-release]
 
@@ -14,23 +19,50 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NUXT_APP_BASE_URL: ${{ vars.NEXUS_APP_BASE_URL || format('/{0}/', github.event.repository.name) }}
+      NUXT_PUBLIC_SITE_URL: ${{ vars.NEXUS_SITE_URL || 'https://pmat77.github.io/bubble-shark-nexus' }}
     steps:
+      - name: Require sync push token
+        shell: bash
+        env:
+          SYNC_TOKEN: ${{ secrets.NEXUS_SYNC_TOKEN }}
+        run: |
+          if [[ -z "${SYNC_TOKEN}" ]]; then
+            echo "::error::Set NEXUS_SYNC_TOKEN with Contents write access to this repository."
+            exit 1
+          fi
       - uses: actions/checkout@v7
+        with:
+          ref: main
+          token: ${{ secrets.NEXUS_SYNC_TOKEN }}
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm sync:panel
+      - name: Sync published Panel release
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.client_payload.tag || inputs.tag }}
+          EXPECTED_SHA: ${{ github.event.client_payload.sha }}
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "repository_dispatch" && ( -z "${RELEASE_TAG}" || -z "${EXPECTED_SHA}" ) ]]; then
+            echo "::error::panel-release requires tag and sha."
+            exit 1
+          fi
+          args=()
+          if [[ -n "${RELEASE_TAG}" ]]; then args+=(--tag "${RELEASE_TAG}"); fi
+          if [[ -n "${EXPECTED_SHA}" ]]; then args+=(--expected-sha "${EXPECTED_SHA}"); fi
+          pnpm sync:panel "${args[@]}"
       - run: pnpm check:baseline
       - run: pnpm test
       - run: pnpm typecheck
       - run: pnpm generate
-        env:
-          NUXT_PUBLIC_SITE_URL: ${{ vars.NEXUS_SITE_URL }}
       - uses: actions/upload-artifact@v7
         with:
           name: nexus-static-synced
@@ -43,3 +75,24 @@ jobs:
             data/release.json
             data/panel
             content/faq
+      - name: Commit and push generated baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process'
+          import { readFileSync } from 'node:fs'
+          import { sourcePaths, faqSeeds } from './scripts/panel-baseline.mjs'
+          const paths = ['data/release.json', ...sourcePaths.map(path => `data/panel/${path}`), ...faqSeeds.map(seed => `content/faq/${seed.slug}.md`), 'public/logo/shark.png', 'public/favicon.png']
+          const git = args => execFileSync('git', args, { encoding: 'utf8' })
+          git(['add', '--', ...paths])
+          if (!git(['diff', '--cached', '--name-only']).trim()) {
+            console.log('Baseline unchanged; no commit or push needed.')
+            process.exit(0)
+          }
+          const { version } = JSON.parse(readFileSync('data/release.json', 'utf8'))
+          git(['config', 'user.name', 'github-actions[bot]'])
+          git(['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
+          git(['commit', '-m', `chore: 同步 Panel ${version} 发布基线`])
+          git(['push', 'origin', 'HEAD:main'])
+          NODE

@@ -131,12 +131,12 @@
     },
     {
       "path": "src/assets/images/logo.png",
-      "sha256": "afe9d728d980fe3f2c46b01bb2d0d27ce27ad3afa0a45e0c05a411520d39c832",
+      "sha256": "772d7e57fcb3f0d7399afbd8b7e072a674b906394aeb16990d674d150cf9f466",
       "url": "https://github.com/PMAT77/bubble-shark-panel/blob/24a9a42dacd3708f7219b29fb0d46ba928225c71/src/assets/images/logo.png"
     },
     {
       "path": "public/favicon.png",
-      "sha256": "d6f7d8a30ed66caa5d8ebb24c9e2c24e22e7674d5b1af0a6e2f7daa2e6341d04",
+      "sha256": "772d7e57fcb3f0d7399afbd8b7e072a674b906394aeb16990d674d150cf9f466",
       "url": "https://github.com/PMAT77/bubble-shark-panel/blob/24a9a42dacd3708f7219b29fb0d46ba928225c71/public/favicon.png"
     }
   ]

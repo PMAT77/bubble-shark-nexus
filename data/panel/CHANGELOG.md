@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-10-09
+
+### Changed
+
+- 实例列表移除重复的安装列，状态列移至运行时长之后、日志之前。
+- 实例安装与更新日志默认展示中文阶段、当前阶段进度和关键事件，原始日志可展开并下载最近一次任务的完整脱敏输出；修复长日志裁剪后只剩一行的问题。
+- 实例安装、重试与更新在表格行和移动端卡片背景展示整体估算进度与淡蓝色波纹，完成后恢复背景；日志同时保留阶段实际进度，精简进度、等待与重试提示。
+- 创建实例后后台准备安装环境，Docker 安装成功前必须准备运行镜像；延迟拉取运行镜像配置已弃用。更新前自动备份失败会停止更新，本地复制失败不再改用下载继续安装。
+
+### Fixed
+
+- 取消安装显示明确取消结果，不再误报安装成功；排队、复制、镜像准备和备份支持取消，旧任务回调不会覆盖新的重试。
+- 修复日志写入异常导致任务未正确结束、Native 查找复制源误用 Docker，以及重启后部分文件被误判为安装成功的问题；无法确认外部任务停止时禁止重新安装和启动。
+
 ## [0.15.5] - 2026-10-06
 
 ### Added
@@ -1041,7 +1055,8 @@
 - DST 房间 / 世界 / Mod 管理
 - 面板与 DST 镜像 GHCR 发布（`v*` tag）
 
-[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.15.5...HEAD
+[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.15.5...v0.16.0
 [0.15.5]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.15.4...v0.15.5
 [0.15.1]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.14.0...v0.15.0

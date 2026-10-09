@@ -77,7 +77,7 @@ Docker 模式运行面板与游戏容器；Native 模式使用 systemd 管理面
 海外或网络正常的 Linux 服务器，一条命令即可开始安装：
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/scripts/install.linux.sh" \
+curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.16.0/scripts/install.linux.sh" \
   | sudo bash -s -- --mode docker
 ```
 
@@ -100,7 +100,7 @@ curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/
 先加上国内档位安装：
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/scripts/install.linux.sh" \
+curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.16.0/scripts/install.linux.sh" \
   | sudo bash -s -- --mode docker --network cn
 ```
 
@@ -110,7 +110,7 @@ curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/
 加 `--check` 只打印体检报告就退出：不装依赖、不建目录、不写安装状态文件、不拉镜像。
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/scripts/install.linux.sh" \
+curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.16.0/scripts/install.linux.sh" \
   | sudo bash -s -- --check
 ```
 
@@ -134,7 +134,7 @@ sudo bsp doctor
 不使用 Docker 时：
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/scripts/install.linux.sh" \
+curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.16.0/scripts/install.linux.sh" \
   | sudo bash -s -- --mode native
 ```
 
@@ -145,7 +145,7 @@ curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/
 当前版本：
 
 ```text
-v0.15.5 · Public Beta
+v0.16.0 · Public Beta
 ```
 
 ## 能做什么

@@ -13,7 +13,7 @@ Windows 不是部署目标，只用于本机开发调试。
 一条命令装完，安装器自己装 Docker 与 Compose 插件，再拉取统一镜像并启动面板栈。想先确认环境再动手，可以加 `--check`：它只打印体检报告，不改动系统。
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.15.5/scripts/install.linux.sh" \
+curl -fsSL "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/v0.16.0/scripts/install.linux.sh" \
   | sudo bash -s -- --mode docker
 ```
 
@@ -26,13 +26,13 @@ GHCR 拉取慢或超时的话，把上面命令里的 `https://raw.githubusercon
 安装命令本身就是体检加安装：**不需要额外先跑一次体检**。安装器会先判断发行版、架构、内存、根分区余量、Docker 状态、GHCR 与 Steam CDN 可达性、面板端口占用，把这份报告打到屏幕上（同时写进安装状态文件），确认没有阻塞项才继续装。
 
 ```bash
-tag=v0.15.5
+tag=v0.16.0
 # gh-proxy 加速；不可用时换成 https://ghfast.top/ 前缀。
 # 用 curl -o 指定带版本号的文件名：wget 遇到同名文件是另存为 .1，容易继续跑上一次的旧脚本
 curl -fL --retry 3 -o "install-${tag}.sh" \
   "https://gh-proxy.com/https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/${tag}/scripts/install.linux.sh"
 
-# 自证版本：这一步必须输出 ...:-v0.15.5}}，对不上就停下排查。
+# 自证版本：这一步必须输出 ...:-v0.16.0}}，对不上就停下排查。
 # 这一行的默认 tag 决定安装器要装的镜像版本
 grep '^BSP_RELEASE_TAG=' "install-${tag}.sh"
 

@@ -6,7 +6,7 @@ keywords: ["迁移","存档","备份","mod","cluster.ini"]
 errorCodes: []
 relatedDocs: ["docs/migrate-from-other-panel.md"]
 order: 7
-sourceRef: "e50d23568f632908743a9b0ef1eaa1713ab3b473"
+sourceRef: "96a43abc752c4aeebd6cb42894d9c8ade53a0439"
 ---
 
 共三步：取出存档、导入、放行端口。
@@ -48,4 +48,4 @@ sourceRef: "e50d23568f632908743a9b0ef1eaa1713ab3b473"
 
 外部端口必须等于内部端口。游戏会把自己配置里的端口上报给 Klei 与 Steam，平台把公网端口改成随机高位时，玩家会遇到「列表里搜得到、点不进去」。端口被平台占用时，请到「世界设置 → 网络」把该实例的分片端口改成平台分配的值。
 
-完整说明见[必须开放的端口](https://github.com/PMAT77/bubble-shark-panel/blob/e50d23568f632908743a9b0ef1eaa1713ab3b473/docs/install-docker.md#必须开放的端口)。
+完整说明见[必须开放的端口](https://github.com/PMAT77/bubble-shark-panel/blob/96a43abc752c4aeebd6cb42894d9c8ade53a0439/docs/install-docker.md#必须开放的端口)。

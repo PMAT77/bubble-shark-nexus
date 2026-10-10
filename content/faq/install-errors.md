@@ -6,7 +6,7 @@ keywords: ["compose","TLS","waiting","GHCR","Mod","doctor"]
 errorCodes: ["TLS handshake timeout","checksum mismatch","Image pull failed"]
 relatedDocs: ["docs/install-docker.md"]
 order: 5
-sourceRef: "b4920a28d2c7eb40b19129e09bbcf03b7b9492fe"
+sourceRef: "dd39ea940d144c13cffd7cc6d528a860f3ae2fb2"
 ---
 
 | 报错关键词 | 怎么处理 |
@@ -19,7 +19,7 @@ sourceRef: "b4920a28d2c7eb40b19129e09bbcf03b7b9492fe"
 | `checksum mismatch` | 下载内容与 Release 不一致。清掉代理或 CDN 缓存，确认 `BSP_RELEASE_TAG` 与资源 URL 是同一版本 |
 | 面板不断重启 | `docker logs --tail 100 bubblesharkpanel-panel` 定位，常见为端口占用、`panel.env` 缺键或数据库权限；修正后 `docker compose up -d panel` |
 | 玩家搜不到房间 | 先查安全组是否放行了全部 6 个 UDP 端口，再确认房间没勾「离线」模式、已保存集群令牌 |
-| Mod 市场列表取不到 | 面板的 Steam 请求走自己的代理配置，见[参数速查 · Steam 与 Mod 市场](https://github.com/PMAT77/bubble-shark-panel/blob/b4920a28d2c7eb40b19129e09bbcf03b7b9492fe/docs/reference.md#steam-与-mod-市场) |
-| 从其他面板或裸机迁过来 | 把源机器的集群目录打成压缩包，再用面板「备份与恢复 → 导入外部存档」导入；能自动完成与需手工处理的项目见[从其他面板或裸机迁入](https://github.com/PMAT77/bubble-shark-panel/blob/b4920a28d2c7eb40b19129e09bbcf03b7b9492fe/docs/migrate-from-other-panel.md) |
+| Mod 市场列表取不到 | 面板的 Steam 请求走自己的代理配置，见[参数速查 · Steam 与 Mod 市场](https://github.com/PMAT77/bubble-shark-panel/blob/dd39ea940d144c13cffd7cc6d528a860f3ae2fb2/docs/reference.md#steam-与-mod-市场) |
+| 从其他面板或裸机迁过来 | 把源机器的集群目录打成压缩包，再用面板「备份与恢复 → 导入外部存档」导入；能自动完成与需手工处理的项目见[从其他面板或裸机迁入](https://github.com/PMAT77/bubble-shark-panel/blob/dd39ea940d144c13cffd7cc6d528a860f3ae2fb2/docs/migrate-from-other-panel.md) |
 
-排查时还能用 `bsp doctor` 做一次全面体检，或用 `bsp logs` 跟面板日志。参数与变量见[参数速查](https://github.com/PMAT77/bubble-shark-panel/blob/b4920a28d2c7eb40b19129e09bbcf03b7b9492fe/docs/reference.md)。
+排查时还能用 `bsp doctor` 做一次全面体检，或用 `bsp logs` 跟面板日志。参数与变量见[参数速查](https://github.com/PMAT77/bubble-shark-panel/blob/dd39ea940d144c13cffd7cc6d528a860f3ae2fb2/docs/reference.md)。

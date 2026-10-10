@@ -16,7 +16,7 @@ BubbleSharkPanel 支持 **Docker 与 Native systemd 双运行时**。面板计�
 
 - **Mod** 主要增加 DST 游戏进程内存；需求取决于 Mod 内容、存档与玩家数，数量只能粗估。4 GiB 配置 2–3 GiB swap 的用户实测可启动 30–40 个 Mod，具体配置仍需观察峰值。
 - **硬限按需使用**：两片不会预先占满各自硬限；两片和同机实例共享物理预算与宿主 swap。
-- **实例控制 → 资源与启动设置**可分别调整主世界、洞穴硬限，或继承全局配置；保存后下次启动生效，升级不覆盖已有 `panel.env` 和手动设置。
+- 分片硬限和启动等待由服务器 `panel.env` 配置；升级不覆盖已有配置，新启动不再使用历史实例资源覆盖值。
 - **安装 / 更新** Steam 服务端时会短时升高占用；面板默认串行 SteamCMD 任务，但仍建议 **先停止运行中实例** 再安装。
 - **开发环境** `pnpm dev:compose` 为双 Node 容器，内存显著高于生产单容器，**不能**用开发占用评估生产。
 
@@ -137,7 +137,7 @@ sudo docker compose --env-file panel.env -f docker-compose.yml -f docker-compose
 |------|------|
 | `BSP_STEAMCMD_CONTAINER_MEMORY_MB` | SteamCMD 子容器内存硬上限（MiB），不设则不限制 |
 | `BSP_STEAMCMD_CONTAINER_MEMORY_SWAP_MB` | SteamCMD 子容器 memory+swap 合计上限（MiB），预设中与内存上限同值，禁用 swap |
-| `BSP_DST_CONTAINER_MEMORY_MB` | 每个 DST 分片硬限（MiB），0 或未设置表示不限；实例设置可分别覆盖两片 |
+| `BSP_DST_CONTAINER_MEMORY_MB` | 每个 DST 分片硬限（MiB），两片使用同一配置，0 或未设置表示不限 |
 | `BSP_HOST_STEAMCMD_PLANNING_MB` | 安装 / 更新前的内存规划预留（MiB），参与守卫判断 |
 | `BSP_HOST_DST_PLANNING_MB` | DST 启动守卫的单分片规划下界（MiB）；与 Mod 估算取较大值，不被硬限截断 |
 | `BSP_HOST_MEMORY_HEADROOM_MB` | 安装/启动守卫保留空闲（默认 512） |
@@ -145,10 +145,19 @@ sudo docker compose --env-file panel.env -f docker-compose.yml -f docker-compose
 | `BSP_SWAP_ON_INSTALL` | 安装器在小内存机上自动创建缓存区文件（默认 `1`，设 `0` 关闭；等同 `--no-swap`） |
 | `BSP_SWAP_SIZE` | root 手动命令默认 `2G`；首装按档位为 `4G`、`3G`、`2G`，显式设置优先 |
 | `BSP_SWAP_FILE` | root 命令创建的新 swapfile 路径（默认 `/swapfile-bsp`）；显式新路径允许追加，禁止覆盖已有文件 |
-| `BSP_SHARD_READY_WAIT_SEC` | 每分片启动等待上限秒数（默认 300）；洞穴预算含加载和互联确认，实例设置可覆盖 |
+| `BSP_SHARD_READY_WAIT_SEC` | 每分片启动等待上限秒数（默认 300）；洞穴预算含加载和互联确认 |
 | `BSP_STEAMCMD_APP_UPDATE_TIMEOUT_MS` | 单次 app_update 超时（毫秒，默认 3600000 = 60 分钟），超时终止后重试断点续传 |
 
 完整示例见仓库根目录 `panel.env.example`。
+
+手动调整时，先停止需要应用新配置的实例，再编辑服务器部署目录中的 `panel.env`：
+
+```bash
+sudo nano /opt/bubblesharkpanel/panel.env
+# 设置 BSP_DST_CONTAINER_MEMORY_MB 和 BSP_SHARD_READY_WAIT_SEC
+```
+
+Native 使用 `sudo bsp restart` 重载面板配置；Docker 使用 `sudo bsp start`，由 Compose 应用变更后的环境变量。Docker 的 `sudo bsp restart` 不重新加载环境变量。随后在面板手动启动实例；已运行或启动中的分片限额与本轮等待期限保留。
 
 ---
 
@@ -169,12 +178,12 @@ sudo docker compose --env-file panel.env -f docker-compose.yml -f docker-compose
 - **房间设置 → 启用洞穴**：小内存档位显示警告
 - **世界设置 → 模组**：提示 Mod 与内存关系
 - **实例管理**：创建/安装前提示避免与运行实例叠加
-- **实例控制**：显示排队、准备、主世界加载、洞穴加载、验证互联、就绪等阶段，以及已用时间、剩余预算和资源诊断。单世界、双世界使用同一启动任务，同节点排队，排队时间不计入分片等待预算。
+- **实例控制**：显示实例状态、就绪结果与失败原因。单世界、双世界使用同一启动任务，同节点排队，排队时间不计入分片等待预算。
 - **启动反馈**：受理请求提示正在启动，完整就绪后提示成功。60 秒无有效加载进展时提示，120 秒显示资源诊断；静默本身不会提前终止任务，重复 IPC 警告不计作加载进展。
 - **启动失败**：区分加载超时、洞穴互联、查询通道、OOM、Lua 错误及进程退出，保存最近报告后清理本轮分片。停止或重启会取消旧任务；面板重启后保留原始等待期限。
-- **资源与启动设置**：显示运行中的实际限制和下一次启动配置，支持继承全局、应用推荐值、主世界与洞穴分别设置硬限，以及 300/600/900 秒或自定义等待。
+- **swap 提示**：确认启动余量不足时在右上角通知，区分未配置、余量不足和已用满，提供创建或追加新 swapfile 命令的一键复制。停止实例后在服务器上以 root 执行；已有文件不覆盖。
 
-安装/启动时若可用内存不足，API 会返回 `HOST_MEMORY_PRESSURE` 错误（可在 `panel.env` 调整守卫）。
+安装时若可用内存不足，API 返回 `HOST_MEMORY_PRESSURE` 错误；实例启动请求受理后，后台检查失败记录到启动报告，并显示失败原因与 swap 操作通知。守卫可在 `panel.env` 调整。
 
 ---
 

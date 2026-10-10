@@ -69,7 +69,7 @@ PANEL_DB_FILENAME="${PANEL_DB_FILENAME:-bubblesharkpanel.sqlite}"
 PANEL_NATIVE_SERVICE="${BSP_NATIVE_SERVICE:-bubblesharkpanel.service}"
 
 SCRIPT_NAME="$(basename "$0")" # 当前脚本名称（用于日志展示）。
-BSP_RELEASE_TAG="${BSP_RELEASE_TAG:-${PANEL_IMAGE_TAG:-v0.17.0}}" # 默认安装的不可变 Release；同时锁定安装资源与镜像版本。
+BSP_RELEASE_TAG="${BSP_RELEASE_TAG:-${PANEL_IMAGE_TAG:-v0.18.0}}" # 默认安装的不可变 Release；同时锁定安装资源与镜像版本。
 INSTALLER_REPO_RAW="${INSTALLER_REPO_RAW:-}" # 兼容旧变量：指定单一安装资源源（为空时使用 INSTALLER_REPO_MIRRORS）。
 # GitHub 资源加速代理（前缀拼接型）：安装资源与 Native 包共用；BSP_GITHUB_PROXY 可强制指定单一节点。
 GITHUB_PROXY_SITES="${GITHUB_PROXY_SITES:-https://gh-proxy.com/,https://ghfast.top/,https://ghproxy.com/}"
@@ -77,7 +77,7 @@ BSP_GITHUB_PROXY="${BSP_GITHUB_PROXY:-}" # 强制指定 GitHub 加速代理（�
 INSTALLER_REPO_MIRRORS="${INSTALLER_REPO_MIRRORS:-}" # 安装资源镜像池；为空时由 init_installer_repo_pool 按代理清单生成。
 # 校验对象是镜像源提供的 git blob 原始字节（LF）；改动 compose 后必须同步更新此处。
 # 历史 pin eb30aeae... 与 v0.1.4 tag 内 compose blob（a34665e2...）不匹配，导致严格校验必然失败。
-INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_YML="${INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_YML:-8385b636f58e76cdb9eb2e6cf7649c43ae5eea502eefe7380b42423e037a1458}"
+INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_YML="${INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_YML:-83f774773e3cb708697780d23774f589110431f2f201472d07dceab82eb7d087}"
 INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_BIND_YML="${INSTALLER_ASSET_SHA256_DOCKER_COMPOSE_BIND_YML:-2ca65c80ee02cfb08e3aec26ae17dabb38296e825147a43896bc7daf1cb07d65}"
 # Debian 12 等发行版源不含 Compose v2 时，从 docker/compose GitHub Release 自动补装 CLI 插件。
 # 摘要与官方 .sha256 / checksums.txt 资产双源核对；升级插件版本时需同步替换版本号与两个摘要。
@@ -98,8 +98,8 @@ BSP_PANEL_ENV_PRESET="${BSP_PANEL_ENV_PRESET:-auto}" # auto | small | medium | l
 # 小内存机安装时自动创建缓存区文件（1=开启，默认）。面板容器不以 root 运行，创建缓存区需要 root，
 # 所以留给用户的不该是「装完再自己 SSH 执行一次」，而是在这里做掉；--no-swap 或 BSP_SWAP_ON_INSTALL=0 关闭。
 BSP_SWAP_ON_INSTALL="${BSP_SWAP_ON_INSTALL:-1}"
-# 自动创建 swap 的总内存阈值（MiB），与 HOST_MEMORY_TIER_SMALL_MAX_MB 同档：< 5 GiB 视为小内存机。
-BSP_SWAP_AUTO_THRESHOLD_MB="${BSP_SWAP_AUTO_THRESHOLD_MB:-${HOST_MEMORY_TIER_SMALL_MAX_MB}}"
+# 无 swap 的 small、medium 主机首装配置共享 swap；>= 8 GiB 不自动创建。
+BSP_SWAP_AUTO_THRESHOLD_MB="${BSP_SWAP_AUTO_THRESHOLD_MB:-${HOST_MEMORY_TIER_MEDIUM_MAX_MB}}"
 # 自动创建 swap 的结果（供 print_summary 分支）：none | active | created | skipped | failed
 AUTO_SWAP_STATE="none"
 AUTO_SWAP_TARGET_MB=0
@@ -983,10 +983,10 @@ write_builtin_panel_env_preset_asset() {
     small.env)
       content="$(cat <<'EOF'
 # GSH 内存预设：small（总内存约 4 GiB，< 5 GiB）
-# 合并到 panel.env 后重启 panel。勿与 dev 压力测试用的大上限（如 5120）混用。
+# 每片 3072 MiB 是按需使用的硬上限，不预留内存；双世界与较重 Mod 配置需观察共享 swap 和宿主机余量。
 BSP_STEAMCMD_CONTAINER_MEMORY_MB=1536
 BSP_STEAMCMD_CONTAINER_MEMORY_SWAP_MB=1536
-BSP_DST_CONTAINER_MEMORY_MB=1536
+BSP_DST_CONTAINER_MEMORY_MB=3072
 BSP_HOST_STEAMCMD_PLANNING_MB=1280
 BSP_HOST_MEMORY_HEADROOM_MB=384
 BSP_HOST_DST_PLANNING_MB=512
@@ -996,9 +996,10 @@ EOF
     medium.env)
       content="$(cat <<'EOF'
 # GSH 内存预设：medium（总内存约 6 GiB，5 GiB–8 GiB）
+# 每片 4096 MiB 是起始硬上限，较重 Mod 配置建议保留 swap，并按实际峰值调整。
 BSP_STEAMCMD_CONTAINER_MEMORY_MB=2048
 BSP_STEAMCMD_CONTAINER_MEMORY_SWAP_MB=2048
-BSP_DST_CONTAINER_MEMORY_MB=1536
+BSP_DST_CONTAINER_MEMORY_MB=4096
 BSP_HOST_STEAMCMD_PLANNING_MB=1280
 BSP_HOST_MEMORY_HEADROOM_MB=512
 BSP_HOST_DST_PLANNING_MB=768
@@ -1020,12 +1021,12 @@ EOF
 # panel.env 内存预设
 
 按宿主机 **总内存（MemTotal）** 选用预设，写入 `panel.env` 中的 **可选** 子容器内存上限与安装守卫参数。  
-默认生产安装**不强制**上限（高配可跑满 Mod）；小内存机建议显式启用预设，避免误设过大上限（如压力测试用的 5120 MiB）。
+新安装默认按总内存合并对应预设；升级保留已有 `panel.env` 与手动配置。硬上限按需使用，不预留内存；实例可分别设置主世界、洞穴上限。
 
 | 预设文件 | 适用总内存 | 说明 |
 |----------|------------|------|
-| `small.env` | 约 4 GiB（&lt; 5 GiB） | 单实例地上、少 Mod；不建议洞穴 |
-| `medium.env` | 约 6 GiB（5–8 GiB） | 单实例 + 洞穴 + 中等 Mod |
+| `small.env` | 约 4 GiB（&lt; 5 GiB） | 每片 3072 MiB；双世界与较重 Mod 配置需观察共享 swap 和宿主机余量 |
+| `medium.env` | 约 6 GiB（5–8 GiB） | 每片 4096 MiB；建议保留 swap，并按实际峰值调整 |
 | `large.env` | ≥ 8 GiB | 默认不设硬上限；可按需取消注释 |
 
 ## 用法
@@ -1491,6 +1492,9 @@ ensure_native_service_user() {
 
   local native_uid
   native_uid="$(id -u "${NATIVE_SERVICE_USER}")"
+  run_as_root mkdir -p "/etc/systemd/system/user@${native_uid}.service.d"
+  printf '[Service]\nDelegate=memory\n' | run_as_root tee "/etc/systemd/system/user@${native_uid}.service.d/bsp-memory.conf" >/dev/null
+  run_as_root systemctl daemon-reload
   run_as_root loginctl enable-linger "${NATIVE_SERVICE_USER}"
   run_as_root systemctl start "user@${native_uid}.service"
 }
@@ -1896,9 +1900,9 @@ Environment (optional):
   BSP_NATIVE_RELEASE_ARCHIVE=PATH  Install a local Native Release archive
   BSP_NATIVE_UPDATE_DIR=PATH    Native panel-update exchange directory (default: <data dir>/panel-update)
   BSP_SWAP_ON_INSTALL=0         Do not create a swapfile automatically on small-RAM hosts (default: 1)
-  BSP_SWAP_SIZE=4G              Swapfile size when one is created (default: 2G, or 4G below ${HOST_MEMORY_WARN_MIN_MB} MB)
+  BSP_SWAP_SIZE=4G              Explicit swapfile size; default by MemTotal: 4G below 3800 MiB, 3G below 5120 MiB, 2G below 8192 MiB
   BSP_SWAP_FILE=PATH            Swapfile path (default: /swapfile-bsp)
-  BSP_SWAP_AUTO_THRESHOLD_MB=5120  Total RAM below which the swapfile is created (default: ${HOST_MEMORY_TIER_SMALL_MAX_MB})
+  BSP_SWAP_AUTO_THRESHOLD_MB=8192  Total RAM below which the swapfile is created (default: ${HOST_MEMORY_TIER_MEDIUM_MAX_MB})
   STRICT_INSTALLER_ASSET_CHECKSUM=0  Skip embedded checksum verification (not recommended)
   v0.2.0 unified image: one docker pull provides the panel, DST runtime libraries and SteamCMD.
 
@@ -2246,12 +2250,13 @@ has_active_swap() {
   swapon --show=NAME --noheadings 2>/dev/null | grep -q .
 }
 
-# 自动创建的 swapfile 大小（MiB）：4 GiB 类机器给 2 GiB 即可把加载尖峰落下去；
-# MemTotal 更小的机器（约 3.7 GiB 及以下）多给一档，否则尖峰仍可能溢出。
+# 自动创建的共享 swap 大小（MiB）：<3800 给4G、small给3G、medium给2G。
 resolve_auto_swap_size_mb() {
   local total_mb="$1"
   if [[ "${total_mb}" -lt "${HOST_MEMORY_WARN_MIN_MB}" ]]; then
     printf '%s' "4096"
+  elif [[ "${total_mb}" -lt "${HOST_MEMORY_TIER_SMALL_MAX_MB}" ]]; then
+    printf '%s' "3072"
   else
     printf '%s' "2048"
   fi
@@ -2268,7 +2273,7 @@ invoke_swap_setup() {
   if [[ -f "${candidate}" ]]; then
     (
       BSP_BSP_LIB_ONLY=1
-      BSP_SWAP_SIZE="${size_mb}M"
+      BSP_SWAP_SIZE="${BSP_SWAP_SIZE:-${size_mb}M}"
       # shellcheck source=scripts/bsp.sh
       source "${candidate}"
       cmd_setup_swap
@@ -2277,7 +2282,7 @@ invoke_swap_setup() {
   fi
 
   if command -v bsp >/dev/null 2>&1; then
-    BSP_SWAP_SIZE="${size_mb}M" bsp setup-swap
+    BSP_SWAP_SIZE="${BSP_SWAP_SIZE:-${size_mb}M}" bsp setup-swap
     return $?
   fi
 
@@ -2319,6 +2324,12 @@ ensure_small_host_swap() {
   fi
 
   size_mb="$(resolve_auto_swap_size_mb "${total_mb}")"
+  if [[ -n "${BSP_SWAP_SIZE:-}" ]]; then
+    local explicit_bytes
+    explicit_bytes="$(numfmt --from=iec "${BSP_SWAP_SIZE}" 2>/dev/null)" || { AUTO_SWAP_STATE=failed; log_warn 'Invalid explicit BSP_SWAP_SIZE; no swap created.'; return 0; }
+    [[ "$explicit_bytes" =~ ^[0-9]+$ && "$explicit_bytes" -gt 0 ]] || { AUTO_SWAP_STATE=failed; return 0; }
+    size_mb=$(( (explicit_bytes+1048575)/1048576 ))
+  fi
   AUTO_SWAP_TARGET_MB="${size_mb}"
   swap_file="${BSP_SWAP_FILE:-/swapfile-bsp}"
 
@@ -2482,7 +2493,7 @@ preflight_checks() {
   # 缓存区现状 + 本次安装会不会顺手创建：--check 在这里之后就会退出，所以这一项只是陈述。
   local swap_auto_threshold_mb swap_target_mb
   swap_auto_threshold_mb="${BSP_SWAP_AUTO_THRESHOLD_MB}"
-  [[ "${swap_auto_threshold_mb}" =~ ^[0-9]+$ ]] || swap_auto_threshold_mb="${HOST_MEMORY_TIER_SMALL_MAX_MB}"
+  [[ "${swap_auto_threshold_mb}" =~ ^[0-9]+$ ]] || swap_auto_threshold_mb="${HOST_MEMORY_TIER_MEDIUM_MAX_MB}"
   if ! command -v swapon >/dev/null 2>&1; then
     report_item 1 "缓存区" "无法检测（缺少 swapon，属于 util-linux 包）"
   elif has_active_swap; then
@@ -2492,6 +2503,14 @@ preflight_checks() {
     PREFLIGHT_NEXT_STEP="安装完成后执行 sudo bsp setup-swap：分片加载整套 Mod 时会短时冲高内存。"
   elif [[ "${host_mem_total_mb}" -gt 0 && "${host_mem_total_mb}" -lt "${swap_auto_threshold_mb}" ]]; then
     swap_target_mb="$(resolve_auto_swap_size_mb "${host_mem_total_mb}")"
+    if [[ -n "${BSP_SWAP_SIZE:-}" ]]; then
+      local swap_explicit_bytes
+      if swap_explicit_bytes="$(numfmt --from=iec "${BSP_SWAP_SIZE}" 2>/dev/null)" && [[ "$swap_explicit_bytes" =~ ^[0-9]+$ ]]; then
+        swap_target_mb=$(( (swap_explicit_bytes+1048575)/1048576 ))
+      else
+        report_item 2 '缓存区大小' 'BSP_SWAP_SIZE 无效；请使用 2G 或 3072M 等正整数容量'
+      fi
+    fi
     report_item 1 "缓存区" "未配置；安装阶段会创建 ${swap_target_mb} MiB 缓存区文件（重启后仍生效，--no-swap 可关闭）"
   else
     report_item 1 "缓存区" "未配置；内存档位不需要（低于 ${swap_auto_threshold_mb} MB 的机器会自动创建）"
@@ -3424,6 +3443,9 @@ main() {
     deploy_native_panel
   fi
 
+  if ! BSP_RUNTIME_MODE="${RESOLVED_INSTALL_MODE}" BSP_PANEL_ENV_FILE="${PANEL_ENV_FILE}" bsp setup-memory-budget; then
+    log_warn 'Shared memory protection was not configured. Existing games and limits are preserved. Stop all games and run: sudo bsp setup-memory-budget'
+  fi
   print_summary
 }
 

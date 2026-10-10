@@ -29,7 +29,7 @@
 | --- | --- | --- |
 | `BSP_INSTALL_MODE` | `auto` | 同 `--mode` |
 | `BSP_NETWORK_PROFILE` | `auto` | 同 `--network` |
-| `BSP_RELEASE_TAG` | 脚本内置 `v0.17.0` | 安装指定版本。升级时填**目标**版本 |
+| `BSP_RELEASE_TAG` | 脚本内置 `v0.18.0` | 安装指定版本。升级时填**目标**版本 |
 | `BSP_PANEL_ENV_PRESET` | `auto` | 内存预设档位：`auto` / `small` / `medium` / `large` / `none` |
 | `PANEL_IMAGE` | GHCR 当前 tag | 统一镜像的完整引用（tag 或 digest），自建仓库时用 |
 | `INSTALL_STEAMCMD_IMAGE` | `1` | 设 `0` 跳过预拉 SteamCMD 镜像 |
@@ -96,7 +96,7 @@
 
 | 变量 | 默认 | 用途 |
 | --- | --- | --- |
-| `PANEL_IMAGE` | `ghcr.io/pmat77/bubblesharkpanel:v0.17.0` | 统一镜像引用，自建仓库或固定 digest 时用 |
+| `PANEL_IMAGE` | `ghcr.io/pmat77/bubblesharkpanel:v0.18.0` | 统一镜像引用，自建仓库或固定 digest 时用 |
 | `BSP_IMAGE_SOURCE` | `auto` | 安装阶段取运行时镜像的路线：`auto`（国内档或层数据不可达时用离线包，否则直拉）/ `offline`（固定离线包）/ `native`（固定 GHCR 直拉） |
 | `BSP_FORCE_IMAGE_PULL` | `0` | 设为 `1` 时即使本地已有同名镜像也重新拉取 |
 | `DOCKER_PULL_STALL_SECONDS` | `90` | 直拉时连续多少秒没有进度就判定停滞并放弃本次尝试 |

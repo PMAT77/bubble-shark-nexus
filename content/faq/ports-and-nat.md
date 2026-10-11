@@ -6,7 +6,7 @@ keywords: ["10999","11000","9527","端口","安全组","NAT","房间","洞穴"]
 errorCodes: []
 relatedDocs: ["docs/install-docker.md"]
 order: 4
-sourceRef: "dd39ea940d144c13cffd7cc6d528a860f3ae2fb2"
+sourceRef: "fddd37a094510fb9630a0c698fa2152179c20413"
 ---
 
 | 用途 | 协议 | 默认端口 | 何时需要 |

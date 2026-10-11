@@ -6,7 +6,7 @@ keywords: ["superadmin","密码","登录","ADMIN_PASSWORD"]
 errorCodes: []
 relatedDocs: ["docs/install-docker.md"]
 order: 3
-sourceRef: "dd39ea940d144c13cffd7cc6d528a860f3ae2fb2"
+sourceRef: "fddd37a094510fb9630a0c698fa2152179c20413"
 ---
 
 管理员名默认 `superadmin`，初始密码由安装器随机生成，安装摘要里会直接打印出来。首次登录会强制改密，改密要求 8-64 位且包含大小写字母、数字与特殊字符。

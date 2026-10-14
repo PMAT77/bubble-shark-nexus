@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.20.5] - 2026-10-14
+
+### Fixed
+
+- Mod 更新操作区合并暂停与恢复下载按钮，移除独立下载状态块；暂停会停止当前下载并保留未完成项，排队任务可立即暂停，无需等待其他 SteamCMD 任务结束。
+- SteamCMD 自更新使用独立的 60 分钟上限，完成后再计算下载或查询超时；Mod 列表显示准备阶段，并提供自更新失败诊断。恢复选中更新时保留原任务范围。
+
 ## [0.20.4] - 2026-10-12
 
 ### Added
@@ -1187,7 +1194,8 @@
 - DST 房间 / 世界 / Mod 管理
 - 面板与 DST 镜像 GHCR 发布（`v*` tag）
 
-[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.20.0...HEAD
+[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.20.5...HEAD
+[0.20.5]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.20.4...v0.20.5
 [0.20.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.17.0...v0.18.0

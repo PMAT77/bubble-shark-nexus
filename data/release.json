@@ -1,15 +1,15 @@
 {
-  "version": "v0.21.1",
+  "version": "v0.21.2",
   "channel": "Public Beta",
-  "releasedAt": "2026-10-17T05:23:44Z",
+  "releasedAt": "2026-10-26T08:38:19Z",
   "repositoryUrl": "https://github.com/PMAT77/bubble-shark-panel",
-  "releaseUrl": "https://github.com/PMAT77/bubble-shark-panel/releases/tag/v0.21.1",
-  "sourceRef": "75a792b2f6ef1b9142bd817cf741695e93facb79",
-  "installer": "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/75a792b2f6ef1b9142bd817cf741695e93facb79/scripts/install.linux.sh",
-  "installerSha256": "f2119b41e6329a35cab93e1d1f5fb2b45fe9a7d6cf9c6e1fd30c78860292b52e",
-  "dockerImage": "ghcr.io/pmat77/bubblesharkpanel:v0.21.1",
-  "nativeAsset": "https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.21.1/bubblesharkpanel-native-v0.21.1-linux-x64.tar.gz",
-  "dockerAsset": "https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.21.1/bubblesharkpanel-v0.21.1-docker-image.tar.gz",
+  "releaseUrl": "https://github.com/PMAT77/bubble-shark-panel/releases/tag/v0.21.2",
+  "sourceRef": "f99fad689a63c0e1c4113dc76d9b6200dabf79b1",
+  "installer": "https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/scripts/install.linux.sh",
+  "installerSha256": "857cc6996b3ffd3fbaa92cd914fa65ea2f4a21a08acd347b12de563de51c22dd",
+  "dockerImage": "ghcr.io/pmat77/bubblesharkpanel:v0.21.2",
+  "nativeAsset": "https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.21.2/bubblesharkpanel-native-v0.21.2-linux-x64.tar.gz",
+  "dockerAsset": "https://github.com/PMAT77/bubble-shark-panel/releases/download/v0.21.2/bubblesharkpanel-v0.21.2-docker-image.tar.gz",
   "githubProxy": "https://gh-proxy.com/",
   "installerFlags": [
     "--mode",
@@ -81,63 +81,63 @@
   "sources": [
     {
       "path": "README.md",
-      "sha256": "8e3391a87a732a1f473836355c6f35a13c0ed7496813192db7c38052287ccf96",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/README.md"
+      "sha256": "6292149413e00eca3335fef91f2eb8f6ecf72b694885ec4436fc6c0208037e5f",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/README.md"
     },
     {
       "path": "LICENSE",
       "sha256": "c61cd3140574cd18230bdffd5098c6f208bc082db20e676579a5741d3837fa83",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/LICENSE"
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/LICENSE"
     },
     {
       "path": "SECURITY.md",
-      "sha256": "75b6bd32e3e44afff5c805616a985bff387ad6d7002eda79b31373ca4483d9c6",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/SECURITY.md"
+      "sha256": "26a5c20a312e4cd889df9d8458160fc444d9dece4a4c96a7ba541bd424a6a2e3",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/SECURITY.md"
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "62fb3d4f82a656d50cbd01e58aced7353f9ad8d87fb984088b1ab772190c7191",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/CHANGELOG.md"
+      "sha256": "d02040059e1d039fe4f30a1c711de26f8b2374d048d83c61a2007a64e138439f",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/CHANGELOG.md"
     },
     {
       "path": "scripts/install.linux.sh",
-      "sha256": "f2119b41e6329a35cab93e1d1f5fb2b45fe9a7d6cf9c6e1fd30c78860292b52e",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/scripts/install.linux.sh"
+      "sha256": "857cc6996b3ffd3fbaa92cd914fa65ea2f4a21a08acd347b12de563de51c22dd",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/scripts/install.linux.sh"
     },
     {
       "path": "docs/install-docker.md",
-      "sha256": "004dfadd6c242a34d0b30df98c8d52d79f2b10382ff644f325e67ec93f420e38",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/docs/install-docker.md"
+      "sha256": "2cde5bdfb37f9fbf79bcddd8ac5d6068dcd813e78fdf835ca9298e2984967005",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/docs/install-docker.md"
     },
     {
       "path": "docs/install-native.md",
-      "sha256": "ef8e5ecdf63ed403854b724d0fed66d218e8fc65dad9f162acf7ea8a1cf906b8",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/docs/install-native.md"
+      "sha256": "1eec58fd96557dec05af60ed0a91c66354e1eca1c0ba9b4621685df22ce5659b",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/docs/install-native.md"
     },
     {
       "path": "docs/reference.md",
-      "sha256": "14771e0ddc7ebf30717fdba04af212fa1f56d1df5fda3a2bf6fd17254ea07070",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/docs/reference.md"
+      "sha256": "fb90462dbdea9ccd7a7a1c860f3af21fdcbade8430daf28f8090bb4d3b149752",
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/docs/reference.md"
     },
     {
       "path": "docs/migrate-from-other-panel.md",
       "sha256": "e8d1f6763cb7fafaf8e2fe0d8e0f96324c451a58bdf7260c27b883f98f3868ce",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/docs/migrate-from-other-panel.md"
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/docs/migrate-from-other-panel.md"
     },
     {
       "path": "docs/MEMORY.md",
       "sha256": "2829a1c441b04e2eaa298f41c69efe6c1dff7ec7099c9fd53d6e0136ba42297e",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/docs/MEMORY.md"
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/docs/MEMORY.md"
     },
     {
       "path": "src/assets/images/logo.png",
       "sha256": "772d7e57fcb3f0d7399afbd8b7e072a674b906394aeb16990d674d150cf9f466",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/src/assets/images/logo.png"
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/src/assets/images/logo.png"
     },
     {
       "path": "public/favicon.png",
       "sha256": "772d7e57fcb3f0d7399afbd8b7e072a674b906394aeb16990d674d150cf9f466",
-      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/75a792b2f6ef1b9142bd817cf741695e93facb79/public/favicon.png"
+      "url": "https://github.com/PMAT77/bubble-shark-panel/blob/f99fad689a63c0e1c4113dc76d9b6200dabf79b1/public/favicon.png"
     }
   ]
 }

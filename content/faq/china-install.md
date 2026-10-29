@@ -6,7 +6,7 @@ keywords: ["国内","中国大陆","ghcr","waiting","TLS","代理"]
 errorCodes: []
 relatedDocs: ["docs/install-docker.md"]
 order: 2
-sourceRef: "70aca7bc6b3d914f6113a9a288d14ecc826010f4"
+sourceRef: "8e77bfad33845a60aea97e11f5ca085a7324627c"
 ---
 
 国内的问题集中在镜像下载：安装器拉的是 GHCR 镜像，而它的镜像层域名 `pkg-containers.githubusercontent.com` 国内基本不可达，直接跑常卡在 `net/http: TLS handshake timeout`。
@@ -14,13 +14,13 @@ sourceRef: "70aca7bc6b3d914f6113a9a288d14ecc826010f4"
 安装命令本身就是体检加安装：**不需要额外先跑一次体检**。安装器会先判断发行版、架构、内存、根分区余量、Docker 状态、GHCR 与 Steam CDN 可达性、面板端口占用，把这份报告打到屏幕上（同时写进安装状态文件），确认没有阻塞项才继续装。
 
 ```bash
-tag=v0.22.3
+tag=v0.22.4
 # gh-proxy 加速；不可用时换成 https://ghfast.top/ 前缀。
 # 用 curl -o 指定带版本号的文件名：wget 遇到同名文件是另存为 .1，容易继续跑上一次的旧脚本
 curl -fL --retry 3 -o "install-${tag}.sh" \
   "https://gh-proxy.com/https://raw.githubusercontent.com/PMAT77/bubble-shark-panel/${tag}/scripts/install.linux.sh"
 
-# 自证版本：这一步必须输出 ...:-v0.22.3}}，对不上就停下排查。
+# 自证版本：这一步必须输出 ...:-v0.22.4}}，对不上就停下排查。
 # 这一行的默认 tag 决定安装器要装的镜像版本
 grep '^BSP_RELEASE_TAG=' "install-${tag}.sh"
 
@@ -90,7 +90,7 @@ docker images --format '{{.Repository}}:{{.Tag}}' | grep "^ghcr.io/pmat77/bubble
 <details>
 <summary>指定镜像源、代理或强制重新拉取</summary>
 
-`--network cn` 之外的参数见[参数速查](https://github.com/PMAT77/bubble-shark-panel/blob/70aca7bc6b3d914f6113a9a288d14ecc826010f4/docs/reference.md#安装器参数)与[镜像与更新](https://github.com/PMAT77/bubble-shark-panel/blob/70aca7bc6b3d914f6113a9a288d14ecc826010f4/docs/reference.md#镜像与更新)。常用三个：
+`--network cn` 之外的参数见[参数速查](https://github.com/PMAT77/bubble-shark-panel/blob/8e77bfad33845a60aea97e11f5ca085a7324627c/docs/reference.md#安装器参数)与[镜像与更新](https://github.com/PMAT77/bubble-shark-panel/blob/8e77bfad33845a60aea97e11f5ca085a7324627c/docs/reference.md#镜像与更新)。常用三个：
 
 - `BSP_GITHUB_PROXY=https://gh-proxy.com/`：固定一个加速节点，不再按内置代理池回退；
 - `BSP_IMAGE_MIRRORS=mirror.example.com`：改用你控制的镜像源；

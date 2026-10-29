@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+## [0.22.4] - 2026-10-29
+
+### Fixed
+
+- 修复从已安装 Mod 的实例复制游戏文件时，正常的 Mod 符号链接导致新实例安装失败的问题；复制后链接指向新实例自身的 Mod 文件。
+- 修复世界启动查询响应延迟时被漏判为超时、主世界被停止且洞穴未启动的问题；等待中的查询跨轮询保留，取消和超时后及时结束。
+
+### Changed
+
+- Mod 管理列表移除下载失败条目的“失败原因”折叠文案，保留失败状态与重试操作。
+- Mod 下载自动选择 Steam 官方节点与连接地址，支持 CDN 鉴权与失败切换；无需修改系统 hosts。
+- Mod 更新按数据块复用旧版本内容，下载中断后保留已校验的数据块；同一面板的实例共享有容量限制的本机缓存。
+- Mod 下载采用独立的共享调度，与本体更新分别管理网络任务，安装时按实例目录互斥；暂停下载不再等待整个批次完成。
+
 ## [0.22.3] - 2026-10-28
 
 ### Fixed
@@ -1250,7 +1264,8 @@
 - DST 房间 / 世界 / Mod 管理
 - 面板与 DST 镜像 GHCR 发布（`v*` tag）
 
-[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.20.5...HEAD
+[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.22.4...HEAD
+[0.22.4]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.22.3...v0.22.4
 [0.20.5]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.20.4...v0.20.5
 [0.20.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.18.0...v0.19.0

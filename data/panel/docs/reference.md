@@ -29,7 +29,7 @@
 | --- | --- | --- |
 | `BSP_INSTALL_MODE` | `auto` | 同 `--mode` |
 | `BSP_NETWORK_PROFILE` | `auto` | 同 `--network` |
-| `BSP_RELEASE_TAG` | 脚本内置 `v0.22.3` | 安装指定版本。升级时填**目标**版本 |
+| `BSP_RELEASE_TAG` | 脚本内置 `v0.22.4` | 安装指定版本。升级时填**目标**版本 |
 | `BSP_PANEL_ENV_PRESET` | `auto` | 内存预设档位：`auto` / `small` / `medium` / `large` / `none` |
 | `PANEL_IMAGE` | GHCR 当前 tag | 统一镜像的完整引用（tag 或 digest），自建仓库时用 |
 | `INSTALL_STEAMCMD_IMAGE` | `1` | 设 `0` 跳过预拉 SteamCMD 镜像 |
@@ -96,7 +96,7 @@
 
 | 变量 | 默认 | 用途 |
 | --- | --- | --- |
-| `PANEL_IMAGE` | `ghcr.io/pmat77/bubblesharkpanel:v0.22.3` | 统一镜像引用，自建仓库或固定 digest 时用 |
+| `PANEL_IMAGE` | `ghcr.io/pmat77/bubblesharkpanel:v0.22.4` | 统一镜像引用，自建仓库或固定 digest 时用 |
 | `BSP_IMAGE_SOURCE` | `auto` | 安装阶段取运行时镜像的路线：`auto`（国内档或层数据不可达时用离线包，否则直拉）/ `offline`（固定离线包）/ `native`（固定 GHCR 直拉） |
 | `BSP_FORCE_IMAGE_PULL` | `0` | 设为 `1` 时即使本地已有同名镜像也重新拉取 |
 | `DOCKER_PULL_STALL_SECONDS` | `90` | 直拉时连续多少秒没有进度就判定停滞并放弃本次尝试 |
@@ -165,15 +165,17 @@
 
 ## Steam 与 Mod 市场
 
-面板自身的 Steam 请求与 SteamCMD 是**两套配置**：上面这组管 Mod 市场列表与详情，下面这组管游戏与 Mod 文件的下载。
+Mod 文件由面板内的下载器直接访问 Steam 官方 CDN，自动选择节点与连接地址，支持分块更新、下载恢复和同一面板内的实例共享缓存。游戏本体仍由 SteamCMD 安装与更新。
 
 | 变量 | 默认 | 用途 |
 | --- | --- | --- |
-| `BSP_STEAM_HTTPS_PROXY` | 空 | 面板侧代理。Docker 模式下代理在宿主机时写 `http://host.docker.internal:7890` |
+| `BSP_STEAM_HTTPS_PROXY` | 空 | Mod 市场与 Mod CDN 的面板侧代理。Docker 模式下代理在宿主机时写 `http://host.docker.internal:7890` |
 | `BSP_STEAM_WEBAPI_BASE_URL` | 官方 | `api.steampowered.com` 的反代，**带路径前缀时结尾必须加 `/`** |
 | `BSP_STEAM_COMMUNITY_BASE_URL` | 官方 | `steamcommunity.com` 的反代 |
 | `BSP_STEAM_WEBAPI_KEY` | 空 | 用官方 Web API 拉列表，稳定性高于页面抓取 |
-| `BSP_STEAM_RELAY_URL` | 空 | 完全连不上 Steam 时走海外中继 |
+| `BSP_STEAM_RELAY_URL` | 空 | Mod 市场列表中继，不代理 Mod 文件 |
+| `BSP_MOD_CACHE_MAX_BYTES` | `5368709120`（5 GiB） | 本机 Mod 缓存保留容量；`0` 表示任务完成后清理缓存，正在下载或安装的内容不会被清理 |
+| `BSP_STEAMCMD_WORKSHOP_DOWNLOAD_TIMEOUT_MS` | `3600000` | Mod CDN 单项任务的执行上限（毫秒），不含排队时间 |
 | `BSP_STEAMCMD_DOWNLOAD_REGION` | 不设置 | 已废弃；旧配置兼容读取并忽略，下载节点由 SteamCMD 自动选择 |
 | `BSP_STEAMCMD_INSTALL_MAX_ATTEMPTS` | `5` | 安装重试次数，最多 20；国内建议 `8` |
 | `BSP_STEAMCMD_APP_UPDATE_TIMEOUT_MS` | `3600000` | 单次 app_update 超时（毫秒），大体积游戏慢链路上调到 2 小时 |

@@ -6,18 +6,20 @@ keywords: ["mod","steam","代理","网络","市场"]
 errorCodes: []
 relatedDocs: ["docs/reference.md"]
 order: 9
-sourceRef: "70aca7bc6b3d914f6113a9a288d14ecc826010f4"
+sourceRef: "8e77bfad33845a60aea97e11f5ca085a7324627c"
 ---
 
-面板自身的 Steam 请求与 SteamCMD 是**两套配置**：上面这组管 Mod 市场列表与详情，下面这组管游戏与 Mod 文件的下载。
+Mod 文件由面板内的下载器直接访问 Steam 官方 CDN，自动选择节点与连接地址，支持分块更新、下载恢复和同一面板内的实例共享缓存。游戏本体仍由 SteamCMD 安装与更新。
 
 | 变量 | 默认 | 用途 |
 | --- | --- | --- |
-| `BSP_STEAM_HTTPS_PROXY` | 空 | 面板侧代理。Docker 模式下代理在宿主机时写 `http://host.docker.internal:7890` |
+| `BSP_STEAM_HTTPS_PROXY` | 空 | Mod 市场与 Mod CDN 的面板侧代理。Docker 模式下代理在宿主机时写 `http://host.docker.internal:7890` |
 | `BSP_STEAM_WEBAPI_BASE_URL` | 官方 | `api.steampowered.com` 的反代，**带路径前缀时结尾必须加 `/`** |
 | `BSP_STEAM_COMMUNITY_BASE_URL` | 官方 | `steamcommunity.com` 的反代 |
 | `BSP_STEAM_WEBAPI_KEY` | 空 | 用官方 Web API 拉列表，稳定性高于页面抓取 |
-| `BSP_STEAM_RELAY_URL` | 空 | 完全连不上 Steam 时走海外中继 |
+| `BSP_STEAM_RELAY_URL` | 空 | Mod 市场列表中继，不代理 Mod 文件 |
+| `BSP_MOD_CACHE_MAX_BYTES` | `5368709120`（5 GiB） | 本机 Mod 缓存保留容量；`0` 表示任务完成后清理缓存，正在下载或安装的内容不会被清理 |
+| `BSP_STEAMCMD_WORKSHOP_DOWNLOAD_TIMEOUT_MS` | `3600000` | Mod CDN 单项任务的执行上限（毫秒），不含排队时间 |
 | `BSP_STEAMCMD_DOWNLOAD_REGION` | 不设置 | 已废弃；旧配置兼容读取并忽略，下载节点由 SteamCMD 自动选择 |
 | `BSP_STEAMCMD_INSTALL_MAX_ATTEMPTS` | `5` | 安装重试次数，最多 20；国内建议 `8` |
 | `BSP_STEAMCMD_APP_UPDATE_TIMEOUT_MS` | `3600000` | 单次 app_update 超时（毫秒），大体积游戏慢链路上调到 2 小时 |
@@ -33,4 +35,4 @@ Mod 市场列表会退回最近一次成功拉取的内容（默认 7 天内）�
 
 ---
 
-完整键名与逐条注释见仓库根目录 [`panel.env.example`](https://github.com/PMAT77/bubble-shark-panel/blob/70aca7bc6b3d914f6113a9a288d14ecc826010f4/panel.env.example)，内存档位的推荐取值见[内存档位](https://github.com/PMAT77/bubble-shark-panel/blob/70aca7bc6b3d914f6113a9a288d14ecc826010f4/docs/MEMORY.md)。本页与脚本默认值不一致时，以 `sudo bash ./scripts/install.linux.sh --help` 的输出为准。
+完整键名与逐条注释见仓库根目录 [`panel.env.example`](https://github.com/PMAT77/bubble-shark-panel/blob/8e77bfad33845a60aea97e11f5ca085a7324627c/panel.env.example)，内存档位的推荐取值见[内存档位](https://github.com/PMAT77/bubble-shark-panel/blob/8e77bfad33845a60aea97e11f5ca085a7324627c/docs/MEMORY.md)。本页与脚本默认值不一致时，以 `sudo bash ./scripts/install.linux.sh --help` 的输出为准。

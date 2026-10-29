@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.22.5] - 2026-10-29
+
+### Fixed
+
+- 修复定时更新完成后实例启动被 SteamCMD 互斥守卫拒绝、任务随即停用的问题：启动前等待安装与 SteamCMD 任务结束（最多 120 秒），版本查询不再计入「正在改写游戏文件」。
+
 ## [0.22.4] - 2026-10-29
 
 ### Fixed
@@ -1264,7 +1270,8 @@
 - DST 房间 / 世界 / Mod 管理
 - 面板与 DST 镜像 GHCR 发布（`v*` tag）
 
-[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.22.4...HEAD
+[Unreleased]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.22.5...HEAD
+[0.22.5]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.22.4...v0.22.5
 [0.22.4]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.22.3...v0.22.4
 [0.20.5]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.20.4...v0.20.5
 [0.20.0]: https://github.com/PMAT77/bubble-shark-panel/compare/v0.19.0...v0.20.0

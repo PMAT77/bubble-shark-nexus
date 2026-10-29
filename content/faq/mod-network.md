@@ -6,7 +6,7 @@ keywords: ["mod","steam","代理","网络","市场"]
 errorCodes: []
 relatedDocs: ["docs/reference.md"]
 order: 9
-sourceRef: "8e77bfad33845a60aea97e11f5ca085a7324627c"
+sourceRef: "a9dd271055a8fbba857b0c2c45c9ca2f7fe471d9"
 ---
 
 Mod 文件由面板内的下载器直接访问 Steam 官方 CDN，自动选择节点与连接地址，支持分块更新、下载恢复和同一面板内的实例共享缓存。游戏本体仍由 SteamCMD 安装与更新。
@@ -35,4 +35,4 @@ Mod 市场列表会退回最近一次成功拉取的内容（默认 7 天内）�
 
 ---
 
-完整键名与逐条注释见仓库根目录 [`panel.env.example`](https://github.com/PMAT77/bubble-shark-panel/blob/8e77bfad33845a60aea97e11f5ca085a7324627c/panel.env.example)，内存档位的推荐取值见[内存档位](https://github.com/PMAT77/bubble-shark-panel/blob/8e77bfad33845a60aea97e11f5ca085a7324627c/docs/MEMORY.md)。本页与脚本默认值不一致时，以 `sudo bash ./scripts/install.linux.sh --help` 的输出为准。
+完整键名与逐条注释见仓库根目录 [`panel.env.example`](https://github.com/PMAT77/bubble-shark-panel/blob/a9dd271055a8fbba857b0c2c45c9ca2f7fe471d9/panel.env.example)，内存档位的推荐取值见[内存档位](https://github.com/PMAT77/bubble-shark-panel/blob/a9dd271055a8fbba857b0c2c45c9ca2f7fe471d9/docs/MEMORY.md)。本页与脚本默认值不一致时，以 `sudo bash ./scripts/install.linux.sh --help` 的输出为准。

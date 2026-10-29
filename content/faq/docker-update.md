@@ -6,7 +6,7 @@ keywords: ["升级","更新","回滚","数据库","备份"]
 errorCodes: []
 relatedDocs: ["docs/install-docker.md"]
 order: 8
-sourceRef: "8e77bfad33845a60aea97e11f5ca085a7324627c"
+sourceRef: "a9dd271055a8fbba857b0c2c45c9ca2f7fe471d9"
 ---
 
 面板内「系统设置 → 面板与游戏版本」两步走：先「下载更新」，再「立即安装」。下载段默认优先取 Release 离线镜像包（走加速代理并校验同名 `.sha256`），失败才回退 GHCR 拉取；下载中断会断点续传，不影响正在运行的面板。
